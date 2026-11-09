@@ -30,8 +30,7 @@ REQ="$TMP/$NAME-request.json"
 RAW="$TMP/$NAME-response.json"
 TXT="$OUTDIR/$NAME.txt"
 
-PROMPT='I want song lyrics and music description for a christmas song. The song is about Santa Claus being mad because someone didnt like their presents.
-This should be a typical length chrismas song, with a chorus and two or three verses.'
+PROMPT='I want song lyrics and music description for a christmas song. The song is about Santa Claus realized that the kids just straight up suck and are addicted to ai slop. he decided this christmas, kids will get $20 worth of OpenAI ChatGPT credit. He then replaces the elves with italian brainrots, such as Tralalero Tralala, Bombardino Crocodilo, Tung Tung Tung Sahur, Ballerina Cappuccina, La Vaca Saturno Saturnita, Chimpanzini Bananini, Cappuccino Assassino, Bobritto Bandito, Lirilì Larilà. Make sure Tung Tung Tung Sahur is the most important out of all of them. This should be a typical length christmas song, with a chorus and two or three verses.'
 
 mkdir -p "$TMP" "$OUTDIR"
 

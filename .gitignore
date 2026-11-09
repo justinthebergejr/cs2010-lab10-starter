@@ -1,7 +1,12 @@
 node_modules/
 openrouter.env
 tmp/
-output/
+output/*
+!output/lyrics.txt
+!output/song.mp3
+!output/illustration.png
+!output/video.mp4
+dist/
 .nest
 AGENTS.md
 *.env

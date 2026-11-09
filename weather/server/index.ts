@@ -3,11 +3,11 @@ import { existsSync } from "node:fs";
 import path from "node:path";
 import {
   CACHE_DIR,
+  APP_ROOT,
   IMAGE_MODEL,
   LOCATION,
   PORT,
   PROMPT_MODEL,
-  ROOT,
   hasOpenRouterKey,
 } from "./config";
 import { isSafeImageFile, pruneCache } from "./cache";
@@ -69,7 +69,7 @@ app.use("/api", (_req, res) => {
   res.status(404).json({ error: "API route not found." });
 });
 
-const dist = path.join(ROOT, "dist");
+const dist = path.join(APP_ROOT, "dist");
 
 if (process.env.NODE_ENV === "production") {
   if (!existsSync(dist)) {

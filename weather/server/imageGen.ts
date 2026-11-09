@@ -142,7 +142,7 @@ async function getReference(): Promise<string> {
     referenceCache = `data:image/jpeg;base64,${bytes.toString("base64")}`;
     return referenceCache;
   } catch {
-    throw new Error("Reference image not found at public/panther-snow.jpg.");
+    throw new Error("Reference image not found at weather/public/panther-snow.jpg.");
   }
 }
 

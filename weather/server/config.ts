@@ -6,8 +6,9 @@ import { loadEnv } from "./env";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 
-/** Repository root, independent of the current working directory. */
-export const ROOT = path.resolve(here, "..");
+/** Weather app and repository roots, independent of the current directory. */
+export const APP_ROOT = path.resolve(here, "..");
+export const ROOT = path.resolve(APP_ROOT, "..");
 
 // Load openrouter.env / .env before reading any process.env values below.
 loadEnv(ROOT);
@@ -23,10 +24,10 @@ export const LOCATION = {
 
 export const TIME_ZONE = process.env.WEATHER_TZ ?? "America/New_York";
 
-export const REFERENCE_IMAGE_PATH = path.join(ROOT, "public", "panther-snow.jpg");
+export const REFERENCE_IMAGE_PATH = path.join(APP_ROOT, "public", "panther-snow.jpg");
 export const REFERENCE_URL = "/panther-snow.jpg";
 
-export const CACHE_DIR = path.join(ROOT, "output", "weather");
+export const CACHE_DIR = path.join(APP_ROOT, "output");
 
 export const PROMPT_MODEL =
   process.env.PROMPT_MODEL ?? "google/gemini-3.5-flash-lite";

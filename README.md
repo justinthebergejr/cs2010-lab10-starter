@@ -58,33 +58,34 @@ AI-reimagined postcard. Express backend + Vite/React frontend.
 
 ### Architecture
 
-1. **Weather** — `server/weather.ts` calls the NWS API
+1. **Weather** — `weather/server/weather.ts` calls the NWS API
    (`/points` → hourly + daily forecast for the `GYX/24,54` grid point),
    normalizes it, and computes local time, time-of-day (dawn/morning/
    golden hour/night, via `suncalc`), and season. Cached for 10 minutes.
-2. **Art direction** — `server/imageGen.ts` sends the reference photo
-   (`public/panther-snow.jpg`) plus a compact weather brief to a multimodal
-   LLM (`google/gemini-3.5-flash-lite`) and asks for a JSON image-editing
-   prompt that keeps the panther statue, pose, and framing but changes sky,
-   light, ground cover, foliage, and precipitation to match the report. If
-   that call fails, a deterministic fallback prompt is used instead.
+2. **Art direction** — `weather/server/imageGen.ts` sends the reference photo
+   (`weather/public/panther-snow.jpg`) plus a compact weather brief to
+   `google/gemini-3.5-flash-lite`. It returns an image-editing prompt that
+   keeps the panther statue, pose, and framing but changes sky, light, ground
+   cover, foliage, and precipitation to match the report. If that call fails,
+   a deterministic fallback prompt is used instead.
 3. **Image-to-image** — that prompt plus the reference photo go to
    `qwen/qwen-image-2.1-turbo` via `POST /api/v1/images` with
    `input_references`. The result is cached to disk under
-   `output/weather/<signature>.png` + `.json`, keyed by a signature of the
+   `weather/output/<signature>.png` + `.json`, keyed by a signature of the
    date, time-of-day bucket, season, rounded temperature, and forecast — so
    repeat loads are instant and don't re-spend money.
-4. **Frontend** — shows live weather immediately, auto-generates an image on
-   first load if none is cached for the current signature, shows a progress
-   overlay (~20s), and offers "Regenerate" / "Update image for this weather"
-   once weather drifts from the cached signature. A "How this image was
-   made" panel shows the exact prompt, weather context, models, cost, and
-   timing.
+4. **Frontend** — `weather/src/` shows live weather immediately,
+   auto-generates an image on first load if none is cached for the current
+   signature, shows a progress overlay (~20s), and offers "Regenerate" /
+   "Update image for this weather" once weather drifts from the cached
+   signature. A "How this image was made" panel shows the exact prompt,
+   weather context, models, cost, and timing.
 
 ### Run it
 
 ```bash
 mise use -g node@24      # first time only
+cd weather
 npm install               # first time only
 npm run dev                # http://localhost:5173 (Vite, proxies /api to :3000)
 ```
@@ -92,6 +93,7 @@ npm run dev                # http://localhost:5173 (Vite, proxies /api to :3000)
 Or production mode:
 
 ```bash
+cd weather
 npm run build
 npm start                  # http://localhost:3000
 ```
@@ -108,8 +110,8 @@ to enable generation. One generation costs roughly $0.02 and takes about
 - `output/illustration.png` — Qwen Image 2.1 Turbo cover illustration.
 - `output/video.mp4` — 5-second Hailuo 3 Max clip, guided by the illustration.
 
-To reproduce the image and video (requires `OPENROUTER_API_KEY` in
-`openrouter.env`):
+To reproduce the image and video from the repository root (requires
+`OPENROUTER_API_KEY` in `openrouter.env`):
 
 ```bash
 ./gen-illustration.sh
@@ -120,4 +122,4 @@ The video script submits the job, polls until completion, then downloads the
 MP4. By default it uses `output/illustration.png` as its first frame. The
 required media files above are explicitly unignored by `.gitignore` so they
 are included in the repository submission; intermediate API responses and
-weather-image cache files remain ignored.
+weather-image cache files under `weather/output/` remain ignored.

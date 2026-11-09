@@ -7,6 +7,7 @@ output/*
 !output/illustration.png
 !output/video.mp4
 dist/
+weather/output/
 .nest
 AGENTS.md
 *.env
